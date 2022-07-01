@@ -1,0 +1,52 @@
+version: "2"
+services:
+  api:
+    container_name: ${PROJECT_NAME}_BACKEND
+
+    build:
+      context: .
+      target: ${NODE_ENV}
+      args:
+        NODE_ENV: '${NODE_ENV}'
+        USER_ID: '${USER_ID:-1000}'
+        GROUP_ID: '${GROUP_ID:-1000}'
+        USER: '${USER:-User}'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - SERVER_PORT=${SERVER_PORT}
+    ports:
+      - "9229:9229"
+    labels:
+      - "traefik.http.services.web.loadbalancer.server.port=${SERVER_PORT}"
+      - "traefik.http.routers.api.rule=Host(`api.traefik.me`)"
+      - "traefik.http.routers.api-tls.tls.domains[0].main=api.traefik.me"
+      - "traefik.http.routers.api-tls.tls.domains[0].sans=api-*.traefik.me"
+      - "traefik.http.routers.api.tls=true"
+    volumes:
+      - .:/node/app:delegated
+      - /node/app/node_modules
+    networks:
+      - dev
+  mongo:
+    container_name: ${PROJECT_NAME}_MONGO
+    hostname: mongo
+    image: mongo
+    env_file:
+      - .env
+    volumes:
+      - "./docker/mongo/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+    volumes_from:
+      - mongodata
+    networks:
+      - dev
+  mongodata:
+    container_name: ${PROJECT_NAME}_MONGO_DATA
+    image: mongo:3.0.4
+    volumes:
+      - /data/db
+    command: --break-mongo
+networks:
+  dev:
+        external: true
+volumes:
+  certs:
