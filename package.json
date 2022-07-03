@@ -1,0 +1,32 @@
+{
+  "name": "natour",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "wwww.js",
+  "scripts": {
+    "dev": "nodemon ./bin/www.js",
+    "start": "node ./bin/www.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/popfrance/node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/popfrance/node/issues"
+  },
+  "homepage": "https://gitlab.com/popfrance/node#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
+}

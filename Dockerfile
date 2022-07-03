@@ -21,14 +21,13 @@ USER node
 # ---------------------------------------
 FROM base AS development
 
-ENV SERVER_PORT=4243
+ENV SERVER_PORT=3000
 ENV PATH /node/node_modules/.bin:$PATH
 EXPOSE $SERVER_PORT 9229
 
 COPY --chown=node:node package*.json ./
 
-RUN \
-    NODE_ENV=development && npm ci && npm cache clean --force
+RUN NODE_ENV=development && npm ci && npm cache clean --force
 
 WORKDIR /node/app
 
@@ -44,8 +43,7 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /node
 COPY --chown=node:node package*.json ./
 
-RUN \
-    npm install --no-optional && npm cache clean --force
+RUN npm install --no-optional && npm cache clean --force
 
 COPY --chown=node:node . .
 
@@ -59,8 +57,7 @@ ENV PATH /node/node_modules/.bin:$PATH
 
 COPY --chown=node:node --from=development /node/node_modules /node/node_modules
 
-RUN \
-    npm run test && npm run lint
+RUN npm run test && npm run lint
 
 # Production stage
 # ---------------------------------------
@@ -69,7 +66,7 @@ FROM source AS production
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 ENV PATH /node/node_modules/.bin:$PATH
-ENV SERVER_PORT=4243
+ENV SERVER_PORT=3000
 
 EXPOSE $SERVER_PORT
 
