@@ -1,25 +1,28 @@
 /**
- * All NatourRoutes should be set up here
+ * All Natours' Routes should be set up here
  */
 
 import { Router } from "express";
-import {
+import { NatourController } from "../controller/index.js";
+
+const {
     getAllTours,
     getTourById,
     createTour,
     updateTour,
     deleteTour,
-} from "../controller/NatourController.js";
+} = NatourController
 
 const router = Router();
 
 // catalogues
-router
+router.route('/')
     .get(getAllTours)
     .post(createTour)
-router
+
+router.route("/:id")
+    .get(getTourById)
     .delete(deleteTour)
-    .get("/:id", getTourById)
     .patch(updateTour)
 
 export default router;

@@ -1,19 +1,3 @@
-import { login } from "../api/catalogueNeo9/catalogueNeo9SDK.js";
-import { beautifulStringify } from "../helper/beautiful.js";
-import to from "../helper/to.js";
-
-
-
-// export const index = async (req, res) => {
-
-//     const [error, result] = await to(login())
-//     console.log(beautifulStringify(error, result))
-//     return error ?
-//         res.status(400).json(error) :
-//         res.status(200).json(result.data)
-// };
-
-
 /**
 * Tour [tours]
 * Retrieve All Tour [GET]

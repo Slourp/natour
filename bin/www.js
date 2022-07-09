@@ -8,8 +8,11 @@ import * as http from 'http';
 import app from "../app.js";
 import Debug from "debug";
 
+/**
+ * .env file configuration
+ */
+config({ path: "../.env" });
 
-config()
 const debug = Debug("api:server");
 
 /**
