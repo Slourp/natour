@@ -1,9 +1,8 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import express from "express";
 import dotenv from "dotenv";
-import userRoutes from "./Routes/userRoutes.js";
+import natourRoutes from "./app/routes/natourRoutes.js";
 
 dotenv.config({ path: "./config/.env" });
 
@@ -31,7 +30,8 @@ app.use(cors());
 /**
  * Routes
  */
-app.get("/", (req, res) => res.status(200).json({ message: "YO" }))
+
+app.use("/api/v1/tours/", natourRoutes);
 
 
 export default app
