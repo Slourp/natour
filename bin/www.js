@@ -1,19 +1,17 @@
-#!/usr/bin/env node
-
+/* eslint-disable import/extensions */
 /**
  * Module dependencies.
  */
-import { config } from "dotenv";
-import * as http from 'http';
-import app from "../app.js";
-import Debug from "debug";
+import { config } from 'dotenv';
+// import Debug from 'debug';
+import app from '../app.js';
 
 /**
  * .env file configuration
  */
-config({ path: "../.env" });
+config({ path: '../.env' });
 
-const debug = Debug("api:server");
+// const debug = Debug('api:server');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -23,13 +21,13 @@ const normalizePort = (val) => {
   const port = parseInt(val, 10);
 
   // named pipe
-  if (isNaN(port)) return val;
+  if (Number.isNaN(port)) return val;
 
   // port number
   if (port >= 0) return port;
 
   return false;
-}
+};
 
 /**
  * Get port from environment and store in Express.
@@ -43,12 +41,12 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${port}`);
 });
 
@@ -56,36 +54,32 @@ app.listen(port, () => {
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error) => {
-  if (error.syscall !== 'listen') throw error;
+// const onError = (error) => {
+//   if (error.syscall !== 'listen') throw error;
 
-  let bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+//   let bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
+//   // handle specific listen errors with friendly messages
+//   switch (error.code) {
+//     case 'EACCES':
+//       console.error(`${bind} requires elevated privileges`);
+//       process.exit(1);
+//       break;
+//     case 'EADDRINUSE':
+//       console.error(`${bind} is already in use`);
+//       process.exit(1);
+//       break;
+//     default:
+//       throw error;
+//   }
+// };
 
 /**
  * Event listener for HTTP server "listening" event.
  */
 
-const onListening = () => {
-  let addr = server.address();
-  let bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+// const onListening = () => {
+//   let addr = server.address();
+//   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+//   debug(`Listening on ${bind}`);
+// };
