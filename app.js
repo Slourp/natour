@@ -19,7 +19,20 @@ const app = express();
  * Server Setup Middlewares
  */
 app
-  .use(json({ extended: true }))
+  .use(
+    json({
+      extended: true,
+      verify: (req, res, buf, encoding) => {
+        try {
+          JSON.parse(buf);
+        } catch (e) {
+          res.status(404).json({ status: 'ko', message: 'invalid JSON' });
+          throw Error('invalid JSON');
+        }
+      },
+    })
+  )
+
   .use(urlencoded({ extended: true }))
   .use(cors());
 
