@@ -22,7 +22,15 @@ const getQueryObj = (query) => {
 
 export const getAllTours = async (query) => {
   const queryStr = setAdvancedFiltering(getQueryObj(query));
-  return await to(Tour.find(getQueryObj(queryStr)));
+
+  const toursQuery = Tour.find(getQueryObj(queryStr));
+
+  if (query?.sort) {
+    const sortBy = query?.sort.split(',').join(' ');
+    toursQuery.sort(sortBy);
+  } else toursQuery.sort('-createdAt');
+
+  return await to(toursQuery);
 };
 
 export const getTourById = async (id) => await to(Tour.findById(id));
