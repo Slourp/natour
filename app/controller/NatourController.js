@@ -15,7 +15,7 @@ import { deleteNatourById } from '../services/natour/NatourDeleteService.js';
  * @param {*} res 
  */
 export const getTours = async (req, res) => {
-  const [fetchToursError, fetchedTours] = await getAllTours();
+  const [fetchToursError, fetchedTours] = await getAllTours(req.query);
 
   if (fetchToursError)
     return res.status(400).json({

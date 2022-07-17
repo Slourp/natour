@@ -11,8 +11,8 @@ const { getTours, tourById, createTour, updateTour, deleteTour } =
 const router = Router();
 
 // catalogues
-router.route('/:id').get(tourById).delete(deleteTour).patch(updateTour);
-
 router.route('/').get(getTours).post(createTour);
+
+router.route('/:id').get(tourById).delete(deleteTour).patch(updateTour);
 
 export default router;
