@@ -24,6 +24,13 @@ const getQueryObj = (query) => {
   excludeFields.forEach((element) => delete queryObj[element]);
   return queryObj;
 };
+const getPagination = (query) => {
+  const page = +query?.page || 1;
+  const limit = +query?.limit || 100;
+  const skip = (page - 1) * limit;
+  console.log('page', page);
+  return { limit, skip };
+};
 
 export const getAllTours = async (query) => {
   const queryStr = setAdvancedFiltering(getQueryObj(query));
@@ -34,10 +41,13 @@ export const getAllTours = async (query) => {
 
   const selectFieldsParams = getFields(query.fields);
 
+  const { limit, skip } = getPagination(query);
+  console.log({ skip });
   const tourQuery = Tour.find(findParams)
     .sort(sortParams)
-    .select(selectFieldsParams);
-
+    .select(selectFieldsParams)
+    .skip(skip)
+    .limit(limit);
   return await to(tourQuery);
 };
 
