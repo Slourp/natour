@@ -2,6 +2,11 @@ import { json } from 'express';
 import to from '../helper/to.js';
 import Tour from '../models/Tour.js';
 
+const getSortByParams = (sort) =>
+  sort ? sort.split(',').join(' ') : '-createdAt';
+
+const getFields = (fields) => (fields ? fields.split(',').join(' ') : '-__v');
+
 const setAdvancedFiltering = (queryObj) => {
   const queryStr = JSON.stringify(queryObj);
 
@@ -23,14 +28,17 @@ const getQueryObj = (query) => {
 export const getAllTours = async (query) => {
   const queryStr = setAdvancedFiltering(getQueryObj(query));
 
-  const toursQuery = Tour.find(getQueryObj(queryStr));
+  const findParams = getQueryObj(queryStr);
 
-  if (query?.sort) {
-    const sortBy = query?.sort.split(',').join(' ');
-    toursQuery.sort(sortBy);
-  } else toursQuery.sort('-createdAt');
+  const sortParams = getSortByParams(query?.sort);
 
-  return await to(toursQuery);
+  const selectFieldsParams = getFields(query.fields);
+
+  const tourQuery = Tour.find(findParams)
+    .sort(sortParams)
+    .select(selectFieldsParams);
+
+  return await to(tourQuery);
 };
 
 export const getTourById = async (id) => await to(Tour.findById(id));
