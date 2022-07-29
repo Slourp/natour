@@ -24,6 +24,7 @@ const getQueryObj = (query) => {
   excludeFields.forEach((element) => delete queryObj[element]);
   return queryObj;
 };
+
 const getPagination = (query) => {
   const page = +query?.page || 1;
   const limit = +query?.limit || 100;
@@ -42,7 +43,7 @@ export const getAllTours = async (query) => {
   const selectFieldsParams = getFields(query.fields);
 
   const { limit, skip } = getPagination(query);
-  console.log({ skip });
+
   const tourQuery = Tour.find(findParams)
     .sort(sortParams)
     .select(selectFieldsParams)

@@ -51,5 +51,6 @@ if (process.argv[2] === '--import') {
   console.log('Need optional param --import or --delete');
 }
 
+process.exit();
 //deleteData().then(importData());
 //console.log(process.argv);
