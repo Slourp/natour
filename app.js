@@ -22,7 +22,7 @@ app
   .use(
     json({
       extended: true,
-      verify: (req, res, buf, encoding) => {
+      verify: (_req, res, buf, _encoding) => {
         try {
           JSON.parse(buf);
         } catch (e) {

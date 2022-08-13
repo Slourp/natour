@@ -1,7 +1,8 @@
+import { json } from 'express';
 import to from '../helper/to.js';
 import Tour from '../models/Tour.js';
 
-const  = (sort) =>
+const getSortByParams = (sort) =>
   sort ? sort.split(',').join(' ') : '-createdAt';
 
 const getFields = (fields) => (fields ? fields.split(',').join(' ') : '-__v');
@@ -11,7 +12,7 @@ const setAdvancedFiltering = (queryObj) => {
 
   const transformerQueryStr = queryStr.replace(
     /\b(gte|gt|lte|lt)\b/g,
-    (match) => getSortByParams`$${match}`
+    (match) => `$${match}`
   );
 
   return JSON.parse(transformerQueryStr);

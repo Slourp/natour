@@ -126,13 +126,13 @@ export const deleteTour = async (req, res) => {
   const [deleteTourError, deleteTour] = await deleteNatourById(tourId);
 
   if (deleteTourError)
-    return res.status(400).json({
+    res.status(400).json({
       status: 'faild',
       message: deleteTourError,
     });
 
   if (!deleteTour)
-    return res.status(400).json({
+    res.status(400).json({
       status: 'faild',
       message: 'Not fond',
     });
