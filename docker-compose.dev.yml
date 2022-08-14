@@ -30,7 +30,9 @@ services:
   mongo:
     container_name: ${PROJECT_NAME}_MONGO
     hostname: mongo
-    image: mongo
+    image: mongo:latest
+    ports:
+    - 27017:27017
     env_file:
       - .env
     volumes:
@@ -41,7 +43,7 @@ services:
       - dev
   mongodata:
     container_name: ${PROJECT_NAME}_MONGO_DATA
-    image: mongo:3.0.4
+    image: mongo:latest
     volumes:
       - /data/db
     command: --break-mongo
