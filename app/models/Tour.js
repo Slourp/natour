@@ -87,6 +87,7 @@ const tourSchema = new mongoose.Schema(
             default: false,
         },
     },
+    // ENABLE VIRTUAL POPULATE
     {
         toJSON: {virtuals: true},
         toObject: {virtuals: true},
