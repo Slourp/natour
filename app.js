@@ -45,6 +45,8 @@ app.use('/api/v1/users/', usersRoutes);
 
 app.use('/api/v1/tours/', natourRoutes);
 
-app.use('/', (_req, res) => res.status(200).json({ message: 'ok' }));
+app.use('/', (_req, res) => {
+  return res.status(200).json({ message: 'ok' });
+});
 
 export default app;

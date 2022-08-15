@@ -21,7 +21,7 @@ const reviews = JSON.parse(
 // IMPORT DATA TO DB
 const importData = async () => {
   try {
-    await Tour.create(tours);
+    await Tour.create(tours, { validateBeforeSave: false });
     // await User.create(users, { validateBeforeSave: false });
     // await Review.create(reviews);
     //console.log('All data were imported');
