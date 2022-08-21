@@ -44,9 +44,9 @@ export const getTours = catchAsync(async (req, res, next) => {
  */
 export const tourById = catchAsync(async (req, res, next) => {
   const { id: tourId } = req?.params;
-  const [fetchTourError, fetchedTour] = await to(getTourById(tourId));
+  const fetchedTour = await getTourById(tourId);
 
-  if (fetchTourError) return next(new AppError('No Tour found with that Id', 404))
+  if (!fetchedTour) return next(new AppError('No Tour found with that Id', 404))
 
 
   return res.status(201).json({
