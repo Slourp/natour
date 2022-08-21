@@ -9,6 +9,8 @@ import {
 import { updateNatourById } from '../services/natour/NatourUpdateService.js';
 import { deleteNatourById } from '../services/natour/NatourDeleteService.js';
 import { getActualYeah } from '../helper/dateHelper.js';
+import catchAsync from '../Utils/CatchAsync.js';
+import AppError from '../models/AppError.js';
 
 /**
 * Tour [tours]
@@ -20,21 +22,15 @@ import { getActualYeah } from '../helper/dateHelper.js';
  * @param {*} req 
  * @param {*} res 
  */
-export const getTours = async (req, res) => {
-  const [fetchToursError, fetchedTours] = await getAllTours(req.query);
-
-  if (fetchToursError)
-    return res.status(400).json({
-      status: 'faild',
-      message: fetchToursError,
-    });
+export const getTours = catchAsync(async (req, res, next) => {
+  const fetchedTours = await getAllTours(req.query);
 
   return res.status(201).json({
     status: 'success',
     result: fetchedTours?.length,
     data: fetchedTours || [],
-  });
-};
+  })
+})
 
 /**
 * Tour [tours/:id]
@@ -46,22 +42,19 @@ export const getTours = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-export const tourById = async (req, res) => {
+export const tourById = catchAsync(async (req, res, next) => {
   const { id: tourId } = req?.params;
-  const [fetchTourError, fetchedTour] = await getTourById(tourId);
+  const [fetchTourError, fetchedTour] = await to(getTourById(tourId));
 
-  if (fetchTourError)
-    return res.status(400).json({
-      status: 'faild',
-      message: fetchTourError,
-    });
+  if (fetchTourError) return next(new AppError('No Tour found with that Id', 404))
+
 
   return res.status(201).json({
     status: 'success',
     result: fetchedTour?.length,
     data: fetchedTour || [],
-  });
-};
+  })
+})
 
 /**
 * Tour [tours]
@@ -73,20 +66,15 @@ export const tourById = async (req, res) => {
  * @param {*} req   
  * @param {*} res 
  */
-export const createTour = async (req, res) => {
-  const [newTourError, newTour] = await to(Tour.create(req.body));
-
-  if (newTourError)
-    return res.status(400).json({
-      status: 'faild',
-      message: newTourError,
-    });
+export const createTour = catchAsync(async (req, res, next) => {
+  // const [newTourError, newTour] = await to(Tour.create(req.body));
+  const newTour = await Tour.create(req.body)
 
   return res.status(201).json({
     status: 'success',
     data: newTour,
   });
-};
+});
 
 /**
 * Tour [tours]
@@ -98,24 +86,20 @@ export const createTour = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-export const updateTour = async (req, res) => {
+export const updateTour = catchAsync(async (req, res, next) => {
   const { id: tourId } = req?.params;
   const { body } = req;
 
-  const [updateTourError, updatedTour] = await updateNatourById(tourId, body);
+  const [updateTourError, updatedTour] = await to(updateNatourById(tourId, body));
 
-  if (updateTourError)
-    return res.status(400).json({
-      status: 'faild',
-      message: updateTourError,
-    });
+  if (updateTourError) return next(new AppError('No Tour found with that Id', 404))
 
   return res.status(201).json({
     status: 'success',
     result: [updatedTour]?.length || 0,
     data: [updatedTour],
   });
-};
+});
 
 /**
 * Tour [tours]
@@ -127,18 +111,16 @@ export const updateTour = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-export const deleteTour = async (req, res) => {
+export const deleteTour = catchAsync(async (req, res, next) => {
   const { id: tourId } = req?.params;
-  const [deleteTourError, deleteTour] = await deleteNatourById(tourId);
 
-  if (deleteTourError)
-    res.status(400).json({
-      status: 'faild',
-      message: deleteTourError,
-    });
+  const [deleteTourError, deleteTour] = await to(deleteNatourById(tourId));
+
+  if (deleteTourError) return next(new AppError('No Tour found with that Id', 404))
+
 
   if (!deleteTour)
-    res.status(400).json({
+    return res.status(400).json({
       status: 'faild',
       message: 'Not fond',
     });
@@ -147,7 +129,7 @@ export const deleteTour = async (req, res) => {
     status: 'success',
     data: [],
   });
-};
+})
 
 export const getTop5Tours = (req, res, next) => {
   req.query.limit = 5;
@@ -156,36 +138,38 @@ export const getTop5Tours = (req, res, next) => {
   next();
 };
 
-export const tourStats = async (req, res, next) => {
-  const [statsTourError, statsTour] = await getTourStats();
+export const tourStats = catchAsync(async (req, res, next) => {
+  // const [statsTourError, statsTour] = await getTourStats();
+  const statsTour = await getTourStats();
 
-  if (statsTourError) {
-    return res.status(400).json({
-      status: 'faild',
-      message: 'Not fond',
-    });
-  }
+  // if (statsTourError) {
+  //   return res.status(400).json({
+  //     status: 'faild',
+  //     message: 'Not fond',
+  //   });
+  // }
 
   return res.status(201).json({
     status: 'success',
     data: statsTour,
   });
-};
+});
 
-export const monthlyPlan = async (req, res) => {
+export const monthlyPlan = catchAsync(async (req, res, next) => {
   const year = +req.params?.year ?? getActualYeah();
 
-  const [planTourError, planTour] = await getMonthlyPlan(year);
+  // const [planTourError, planTour] = await getMonthlyPlan(year);
+  const planTour = await getMonthlyPlan(year);
 
-  if (planTourError) {
-    return res.status(400).json({
-      status: 'faild',
-      message: 'Not fond',
-    });
-  }
+  // if (planTourError) {
+  //   return res.status(400).json({
+  //     status: 'faild',
+  //     message: 'Not fond',
+  //   });
+  // }
 
   return res.status(201).json({
     status: 'success',
     data: planTour,
   });
-};
+});

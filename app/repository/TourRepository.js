@@ -48,7 +48,7 @@ export const getAllTours = async (query) => {
     .select(selectFieldsParams)
     .skip(skip)
     .limit(limit);
-  return await to(tourQuery);
+  return await tourQuery
 };
 
 export const getTourStats = async () => {
@@ -72,7 +72,7 @@ export const getTourStats = async () => {
     },
   ]);
 
-  return await to(stats);
+  return await stats;
 };
 
 export const getMonthlyPlan = async (year) => {
@@ -111,7 +111,7 @@ export const getMonthlyPlan = async (year) => {
     },
   ]);
 
-  return await to(plan);
+  return await plan
 };
 
-export const getTourById = async (id) => await to(Tour.findById(id));
+export const getTourById = async (id) => await Tour.findById(id);
