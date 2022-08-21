@@ -4,6 +4,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
 import { usersRoutes, natourRoutes } from './app/routes/index.js';
+import AppError from './app/models/AppError.js';
+import { globalErrorHandler } from './app/controller/ErrorController.js';
 
 /**
  * Connected to the Mango Database
@@ -45,8 +47,10 @@ app.use('/api/v1/users/', usersRoutes);
 
 app.use('/api/v1/tours/', natourRoutes);
 
-app.use('/', (_req, res) => {
-  return res.status(200).json({ message: 'ok' });
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
+app.use(globalErrorHandler);
 
 export default app;
