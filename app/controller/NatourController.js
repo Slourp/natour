@@ -8,7 +8,7 @@ import {
 } from '../repository/TourRepository.js';
 import { updateNatourById } from '../services/natour/NatourUpdateService.js';
 import { deleteNatourById } from '../services/natour/NatourDeleteService.js';
-import { getActualYeah } from '../helper/dateHelper.js';
+import { getActualYear } from '../helper/dateHelper.js';
 import catchAsync from '../Utils/CatchAsync.js';
 import AppError from '../models/AppError.js';
 
@@ -156,7 +156,7 @@ export const tourStats = catchAsync(async (req, res, next) => {
 });
 
 export const monthlyPlan = catchAsync(async (req, res, next) => {
-  const year = +req.params?.year ?? getActualYeah();
+  const year = +req.params?.year ?? getActualYear();
 
   // const [planTourError, planTour] = await getMonthlyPlan(year);
   const planTour = await getMonthlyPlan(year);

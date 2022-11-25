@@ -3,7 +3,7 @@ import express, { json, urlencoded } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
-import { usersRoutes, natourRoutes } from './app/routes/index.js';
+import { usersRoutes, natourRoutes, googleDriveRoutes } from './app/routes/index.js';
 import AppError from './app/models/AppError.js';
 import { globalErrorHandler } from './app/controller/ErrorController.js';
 

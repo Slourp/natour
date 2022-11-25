@@ -14,8 +14,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - SERVER_PORT=${SERVER_PORT}
-    ports:
-      - "9229:9229"
+    # ports:
+    #   - "9229:9229"
     labels:
       - "traefik.http.services.web.loadbalancer.server.port=${SERVER_PORT}"
       - "traefik.http.routers.natour.rule=Host(`natour.traefik.me`)"
@@ -32,7 +32,7 @@ services:
     hostname: mongo
     image: mongo:latest
     ports:
-    - 27017:27017
+      - 27017:27017
     env_file:
       - .env
     volumes:
@@ -49,6 +49,6 @@ services:
     command: --break-mongo
 networks:
   dev:
-        external: true
+    external: true
 volumes:
   certs:

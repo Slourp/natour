@@ -1,1 +1,1 @@
-export const getActualYeah=()=> new Date().getFullYear() 
+export const getActualYear = () => new Date().getFullYear() 
