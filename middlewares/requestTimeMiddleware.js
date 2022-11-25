@@ -1,4 +1,4 @@
-const requestTimeMiddleware = (req, res, next) => {
+const requestTimeMiddleware = (req, _res, next) => {
 	req.requestTime = Date.now()
 	next()
 }
