@@ -10,8 +10,7 @@ services:
         USER_ID: '${USER_ID:-1000}'
         GROUP_ID: '${GROUP_ID:-1000}'
         USER: '${USER:-User}'
-    restart:
-      on-failure:5
+    restart: on-failure:5
     environment:
       - NODE_ENV=${NODE_ENV}
       - SERVER_PORT=${SERVER_PORT}
@@ -22,9 +21,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.web.loadbalancer.server.port=${SERVER_PORT}"
 
-      - "traefik.http.routers.apimoulinette.rule=Host(`api.moulinette.popgroupe.tech`)"
-      - "traefik.http.routers.apimoulinette.entrypoints=websecure"
-      - "traefik.http.routers.apimoulinette.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.natour.rule=Host(`${URL}`)"
+      - "traefik.http.routers.natour.entrypoints=websecure"
+      - "traefik.http.routers.natour.tls.certresolver=myhttpchallenge"
     volumes:
       - .:/node/app:delegated
       - /node/app/node_modules
