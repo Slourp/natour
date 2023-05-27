@@ -16,8 +16,13 @@ const {
 const router = Router();
 
 router.param('id', checkUserId);
-router.route('/').get(getAllUsers).post(createUser);
+router.route('/')
+  .get(getAllUsers)
+  .post(createUser);
 
-router.route('/:id').get(getUserById).patch(updateUser).delete(deleteUser);
+router.route('/:id')
+  .get(getUserById)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 export default router;
